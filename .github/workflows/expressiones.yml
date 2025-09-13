@@ -21,6 +21,5 @@ jobs:
         run: echo setting env
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: github Token
-        run: echo GITHUB_TOKEN
-        
+      - name: Print GITHUB_TOKEN env
+        run: echo $GITHUB_TOKEN
