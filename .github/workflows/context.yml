@@ -7,4 +7,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: RAMA
-        run: echo "Desplegando en la rama $GITHUB_REF y $GITHUB_AUTHOR_NAME"
+        run: echo "Desplegando en la rama $GITHUB_REF y $GITHUB_ACTOR"
