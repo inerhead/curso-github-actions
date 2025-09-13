@@ -1,5 +1,7 @@
 
 
-function name(...params) {
+export const name = (...params) => {
     console.log(...params);
 }
+
+export default name;
