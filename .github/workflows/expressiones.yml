@@ -1,0 +1,26 @@
+name: expressiones
+run-name: expressiones
+
+on:
+  push:
+    branches: [ "main" ]    
+
+  workflow_dispatch:
+
+jobs:
+  Execute:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Setup env with Node
+        uses: actions/setup-node@v5.0.0
+        with:
+          node-version: 18
+      - name: Run with expressiones.js
+        run: node expressiones.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: github Token
+        run: echo GITHUB_TOKEN
+        
