@@ -21,5 +21,11 @@ jobs:
         run: echo setting env
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Print GITHUB_TOKEN env
-        run: echo $GITHUB_TOKEN
+      - name: Check if GITHUB_TOKEN exists
+        run: |
+          if [ -n "$GITHUB_TOKEN" ]; then
+            echo "✅ GITHUB_TOKEN is set"
+            echo ${GITHUB_TOKEN}
+          else
+            echo "❌ GITHUB_TOKEN is not set"
+          fi
