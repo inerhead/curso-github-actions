@@ -1,4 +1,5 @@
 name: contexto
+run-name: contexto
 on: push
 jobs:
   check-main:
