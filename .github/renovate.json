@@ -1,14 +1,9 @@
-{
-    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": ["config:base"],
+{    
     "packageRules": [
       {
         "matchPackageNames": ["express"],
         "enabled": true,
-        "automerge": false,
-        "schedule": ["before 9am every day"] ,
-        "prConcurrentLimit": 1,
-        "prHourlyLimit": 1,
+        "automerge": false,        
         "rangeStrategy": "pin"
       },
       {
@@ -16,6 +11,7 @@
         "enabled": false
       }
     ],
+    "baseBranches": ["main"],
     "ignorePaths": [],
     "prConcurrentLimit": 1,
     "prHourlyLimit": 1,   
