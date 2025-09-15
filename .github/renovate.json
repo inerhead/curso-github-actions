@@ -6,7 +6,7 @@
         "matchPackageNames": ["express"],
         "enabled": true,
         "automerge": false,
-        "schedule": ["at 9am", "at 3pm", "at 9pm"] ,
+        "schedule": ["before 9am every day"] ,
         "prConcurrentLimit": 1,
         "prHourlyLimit": 1,
         "rangeStrategy": "pin"
@@ -18,7 +18,6 @@
     ],
     "ignorePaths": [],
     "prConcurrentLimit": 1,
-    "prHourlyLimit": 1,
-    "schedule": ["at 9am", "at 3pm", "at 9pm"],
+    "prHourlyLimit": 1,   
     "timezone": "America/Bogota"
 }
