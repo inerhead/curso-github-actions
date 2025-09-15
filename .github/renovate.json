@@ -6,7 +6,7 @@
         "matchPackageNames": ["express"],
         "enabled": true,
         "automerge": false,
-        "schedule": ["every 2 minute"],
+        "schedule": ["every 12 hours"],
         "prConcurrentLimit": 1,
         "prHourlyLimit": 1,
         "rangeStrategy": "pin"
@@ -19,6 +19,6 @@
     "ignorePaths": [],
     "prConcurrentLimit": 1,
     "prHourlyLimit": 1,
-    "schedule": ["every 2 minute"],
+    "schedule": ["every 12 hours"],
     "timezone": "America/Bogota"
 }
