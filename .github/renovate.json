@@ -1,0 +1,25 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": ["config:base"],
+    "packageRules": [
+      {
+        "matchPackageNames": ["express"],
+        "enabled": true,
+        "automerge": false,
+        "schedule": ["before 6am on monday"],
+        "prConcurrentLimit": 1,
+        "prHourlyLimit": 1,
+        "rangeStrategy": "replace",
+        "updateTypes": ["minor", "patch", "major"]
+      },
+      {
+        "matchPackageNames": ["nodemon"],
+        "enabled": false
+      }
+    ],
+    "ignorePaths": [],
+    "prConcurrentLimit": 1,
+    "prHourlyLimit": 1,
+    "schedule": ["before 6am on monday"],
+    "timezone": "America/Mexico_City"
+}
