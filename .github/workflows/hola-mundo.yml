@@ -26,7 +26,7 @@ jobs:
       - name: Public IP #Nombre del step
         id: ip #identificador usable dentro del job para otros steps
         uses: haythem/public-ip@v1.3 #Usará el action haythem/public-ip
-      - name: Hola mundo #Segundo step de nombre Hola mundo
+      - name: Hola mundo WWII #Segundo step de nombre Hola mundo
         run: echo ¡Hola Mundo desde ${{ steps.ip.outputs.ipv4 }}! #bash
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
