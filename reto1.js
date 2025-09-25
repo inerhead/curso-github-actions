@@ -4,6 +4,7 @@ import name from "./main.js";
     console.log("Hola mundo");
 
     name("Hola", "Gustavo", "Ossio", "Jimenez");
+    name("Hola", "Gustavo", "Ossio", "Jimenez");
 
 
 
