@@ -1,6 +1,6 @@
 {
   "name": "@gossioj/reto1",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Un paquete de ejemplo que saluda con calidad",
   "main": "main.js",
   "type": "module",
