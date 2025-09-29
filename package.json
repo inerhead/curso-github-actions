@@ -1,16 +1,31 @@
 {
-  "name": "reto1",
+  "name": "@gossio/reto1",
   "version": "2.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Un paquete de ejemplo que saluda con calidad",
+  "main": "main.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node reto1.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublishOnly": "npm test"
   },
-  "author": "",
+  "keywords": ["hola", "saludo", "ejemplo", "node"],
+  "author": "Gustavo Ossio Jimenez",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gossio/reto1.git"
+  },
+  "homepage": "https://github.com/gossio/reto1#readme",
+  "bugs": {
+    "url": "https://github.com/gossio/reto1/issues"
+  },
   "dependencies": {
     "express": "4.21.2",
     "nodemon": "3.1.5"
-  }
+  },
+  "files": [
+    "main.js",
+    "reto1.js"
+  ]
 }
