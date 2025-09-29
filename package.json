@@ -1,5 +1,5 @@
 {
-  "name": "@gossioj/reto1",
+  "name": "@inerhead/reto1",
   "version": "2.0.1",
   "description": "Un paquete de ejemplo que saluda con calidad",
   "main": "main.js",
@@ -15,11 +15,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gossioj/reto1.git"
+    "url": "git+https://github.com/inerhead/curso-github-actions.git"
   },
-  "homepage": "https://github.com/gossio/reto1#readme",
+  "homepage": "https://github.com/inerhead/curso-github-actions#readme",
   "bugs": {
-    "url": "https://github.com/gossio/reto1/issues"
+    "url": "https://github.com/inerhead/curso-github-actions/issues"
   },
   "dependencies": {
     "express": "4.21.2",
