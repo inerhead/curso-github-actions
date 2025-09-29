@@ -10,9 +10,12 @@
   "keywords": ["hola", "saludo", "ejemplo", "node"],
   "author": "Gustavo Ossio Jimenez",
   "license": "ISC",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gossio/reto1.git"
+    "url": "git+https://github.com/gossioj/reto1.git"
   },
   "homepage": "https://github.com/gossio/reto1#readme",
   "bugs": {

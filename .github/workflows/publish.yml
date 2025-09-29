@@ -1,5 +1,5 @@
-name: Publish to npm
-run-name: Publish to npm II
+name: Publish to GitHub Packages
+run-name: Publish to GitHub Packages
 
 on:
   push:
@@ -10,6 +10,9 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     
     steps:
     - name: Checkout code
@@ -20,11 +23,12 @@ jobs:
       with:
         node-version: '18'
         registry-url: 'https://npm.pkg.github.com'
+        scope: '@gossioj'
         
     - name: Install dependencies
       run: npm ci
       
-    - name: Publish to npm
+    - name: Publish to GitHub Packages
       run: npm publish
       env:
         NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
