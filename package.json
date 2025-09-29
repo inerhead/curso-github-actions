@@ -5,9 +5,7 @@
   "main": "main.js",
   "type": "module",
   "scripts": {
-    "start": "node reto1.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prepublishOnly": "npm test"
+    "start": "node reto1.js"
   },
   "keywords": ["hola", "saludo", "ejemplo", "node"],
   "author": "Gustavo Ossio Jimenez",
