@@ -69,7 +69,7 @@ jobs:
         body: |
           ## 🚀 Version Update from Power Automate
           
-          **Package Name:** `${{ inputs.packageName }}`
+          **Package Names:** `${{ inputs.packageName }}`
           **Version Type:** `${{ inputs.versionType }}`
           **SDK Version:** `${{ inputs.versionSDK }}`
           
