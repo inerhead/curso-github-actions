@@ -38,16 +38,10 @@ jobs:
       with:
         node-version: '18'
     
-    - name: Configure Git
-      run: |
-        git config user.name "github-actions[bot]"
-        git config user.email "github-actions[bot]@users.noreply.github.com"
-    
-    - name: Create Bump version branch
+    - name: Set branch name
       run: |
         BRANCH_NAME="bump-version-${{ inputs.versionType }}-$(date +%s)"
         echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
-        git checkout -b "$BRANCH_NAME"
     
     - name: Update package.json express version
       run: |
@@ -66,21 +60,13 @@ jobs:
     - name: Install dependencies
       run: npm install
     
-    - name: Commit changes
-      run: |
-        git add package.json package-lock.json
-        git commit -m "chore: bump ${{ inputs.versionType }} with SDK ${{ inputs.versionSDK }}"
-    
-    - name: Push branch
-      run: |
-        git push origin $BRANCH_NAME
-    
     - name: Create Pull Request
       id: create_pr
       uses: peter-evans/create-pull-request@v6
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         branch: ${{ env.BRANCH_NAME }}
+        commit-message: "chore: bump ${{ inputs.versionType }} with SDK ${{ inputs.versionSDK }}"
         title: "chore: Update package to version ${{ inputs.versionSDK }}"
         body: |
           ## 🚀 Version Update from Power Automate
