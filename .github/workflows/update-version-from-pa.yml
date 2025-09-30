@@ -45,9 +45,9 @@ jobs:
     
     - name: Create Bump version branch
       run: |
-        BRANCH_NAME="Bump version-${{ inputs.packageName }}-${{ inputs.versionSDK }}-${{ inputs.versionType }}"
+        BRANCH_NAME="bump-version-${{ inputs.versionType }}-$(date +%s)"
         echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
-        git checkout -b $BRANCH_NAME
+        git checkout -b "$BRANCH_NAME"
     
     - name: Update package.json express version
       run: |
