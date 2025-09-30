@@ -61,8 +61,11 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         branch: "bump-version-${{ inputs.versionType }}-${{ github.run_number }}"
-        commit-message: "chore: bump ${{ inputs.versionType }} with SDK ${{ inputs.versionSDK }}"
+        commit-message: "chore: update express to ${{ inputs.versionSDK }}"
         title: "chore: Update express to version ${{ inputs.versionSDK }}"
+        add-paths: |
+          package.json
+          package-lock.json
         body: |
           ## 🚀 Version Update from Power Automate
           
