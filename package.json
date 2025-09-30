@@ -1,13 +1,18 @@
 {
   "name": "@inerhead/reto1",
-  "version": "2.0.2",
+  "version": "5.1.0",
   "description": "Un paquete de ejemplo que saluda con calidad",
   "main": "main.js",
   "type": "module",
   "scripts": {
     "start": "node reto1.js"
   },
-  "keywords": ["hola", "saludo", "ejemplo", "node"],
+  "keywords": [
+    "hola",
+    "saludo",
+    "ejemplo",
+    "node"
+  ],
   "author": "Gustavo Ossio Jimenez",
   "license": "ISC",
   "publishConfig": {

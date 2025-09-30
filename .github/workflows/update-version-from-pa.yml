@@ -1,0 +1,132 @@
+name: Update Package Version from Power Automate
+
+on:
+  workflow_dispatch:
+    inputs:
+      versionSDK:
+        description: 'SDK Version'
+        required: true
+        type: string
+      versionType:
+        description: 'Version Type (major, minor, patch)'
+        required: true
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
+      packageName:
+        description: 'Package Name'
+        required: true
+        type: string
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+    
+    - name: Configure Git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+    
+    - name: Create Bump version branch
+      run: |
+        BRANCH_NAME="Bump version-${{ inputs.packageName }}-${{ inputs.versionSDK }}-${{ inputs.versionType }}"
+        echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+        git checkout -b $BRANCH_NAME
+    
+    - name: Update package.json express version
+      run: |
+        npm pkg set dependencies.express="${{ inputs.versionSDK }}"
+    
+    #- name: Bump version
+    #  run: |
+    #    npm version ${{ inputs.versionType }} --no-git-tag-version
+    #    NEW_VERSION=$(node -p "require('./package.json').version")
+    #    echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+    
+    #- name: Add SDK version to package.json
+    #   run: |
+    #     npm pkg set sdkVersion="${{ inputs.versionSDK }}"
+    
+    - name: Install dependencies
+      run: npm install
+    
+    - name: Commit changes
+      run: |
+        git add package.json package-lock.json
+        git commit -m "chore: bump ${{ inputs.versionType }} with SDK ${{ inputs.versionSDK }}"
+    
+    - name: Push branch
+      run: |
+        git push origin $BRANCH_NAME
+    
+    - name: Create Pull Request
+      id: create_pr
+      uses: peter-evans/create-pull-request@v6
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ env.BRANCH_NAME }}
+        title: "chore: Update package to version ${{ inputs.versionSDK }}"
+        body: |
+          ## 🚀 Version Update from Power Automate
+          
+          **Package Name:** `${{ inputs.packageName }}`
+          **Version Type:** `${{ inputs.versionType }}`
+          **SDK Version:** `${{ inputs.versionSDK }}`
+          
+          ### Changes:
+          - ✅ Express Package updated
+          - ✅ Version bumped (${{ inputs.versionType }})
+          - ✅ SDK version added
+          - ✅ Dependencies installed
+          
+          ---
+          *Automated by Power Automate workflow*
+        labels: |
+          FromPowerAutomate
+          ReadyToMerge
+        assignees: ${{ github.actor }}
+    
+    - name: Wait for PR to be created
+      run: sleep 5
+    
+    - name: Get PR number
+      id: get_pr
+      run: |
+        PR_NUMBER=$(gh pr list --head "$BRANCH_NAME" --json number --jq '.[0].number')
+        echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    #- name: Approve PR with different token
+    #  run: |
+    #    gh pr review ${{ env.PR_NUMBER }} --approve
+    #  env:
+    #    GH_TOKEN: ${{ secrets.APPROVER_TOKEN }}     
+    
+    - name: Auto-merge PR
+      run: |
+        gh pr merge ${{ env.PR_NUMBER }} --auto --squash --delete-branch
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Output results
+      run: |
+        echo "✅ PR #${{ env.PR_NUMBER }} created and auto-merge enabled"
+        echo "📦 Package: ${{ inputs.packageName }}"        
+        echo "📱 SDK Version: ${{ inputs.versionSDK }}"

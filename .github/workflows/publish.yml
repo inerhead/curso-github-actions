@@ -3,13 +3,17 @@ run-name: Publish to GitHub Packages
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main ]
   release:
     types: [ published ]
 
 jobs:
   publish:
     runs-on: ubuntu-latest
+    # Skip si el autor es github-actions[bot]
+    if: |      
+      github.actor != 'github-actions[bot]'
+
     permissions:
       contents: read
       packages: write
