@@ -42,69 +42,52 @@ jobs:
       run: |
         echo "📦 Updating express to version: ${{ inputs.versionSDK }}"
         npm pkg set dependencies.express="${{ inputs.versionSDK }}"
-        echo "✅ Express updated"
-        cat package.json | grep -A 3 dependencies
     
     - name: Install dependencies
       run: npm install
     
-    - name: Check git status
+    - name: Configure Git
       run: |
-        echo "📊 Git status after changes:"
-        git status
-        echo "📝 Git diff:"
-        git diff
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+    
+    - name: Create branch and commit
+      run: |
+        BRANCH_NAME="bump-express-${{ inputs.versionSDK }}-${{ github.run_number }}"
+        echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+
+        git checkout -b "$BRANCH_NAME"
+        git add package.json package-lock.json
+        git commit -m "chore: update express to ${{ inputs.versionSDK }}"
+        git push origin "$BRANCH_NAME"
     
     - name: Create Pull Request
-      id: create_pr
-      uses: peter-evans/create-pull-request@v6
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        branch: "bump-version-${{ inputs.versionType }}-${{ github.run_number }}"
-        commit-message: "chore: update express to ${{ inputs.versionSDK }}"
-        title: "chore: Update express to version ${{ inputs.versionSDK }}"
-        add-paths: |
-          package.json
-          package-lock.json
-        body: |
-          ## 🚀 Version Update from Power Automate
-          
-          **Package Name:** `${{ inputs.packageName }}`
-          **Version Type:** `${{ inputs.versionType }}`
-          **SDK Version:** `${{ inputs.versionSDK }}`
-          
-          ### Changes:
-          - ✅ Express Package updated
-          - ✅ Version bumped (${{ inputs.versionType }})
-          - ✅ SDK version added
-          - ✅ Dependencies installed
-          
-          ---
-          *Automated by Power Automate workflow*
-        labels: |
-          FromPowerAutomate
-          ReadyToMerge
-        assignees: ${{ github.actor }}
-    
-    - name: Get PR number from output
-      id: get_pr
       run: |
-        PR_NUMBER="${{ steps.create_pr.outputs.pull-request-number }}"
-        echo "PR Number: $PR_NUMBER"
-        if [ -z "$PR_NUMBER" ] || [ "$PR_NUMBER" == "" ]; then
-          echo "❌ No PR was created (no changes detected or PR already exists)"
-          exit 0
-        fi
+        PR_URL=$(gh pr create \
+          --title "chore: Update express to version ${{ inputs.versionSDK }}" \
+          --body "## 🚀 Version Update from Power Automate
+
+**Package Name:** \`${{ inputs.packageName }}\`
+**Express Version:** \`${{ inputs.versionSDK }}\`
+
+### Changes:
+- ✅ Express updated to ${{ inputs.versionSDK }}
+- ✅ Dependencies installed
+
+---
+*Automated by Power Automate workflow*" \
+          --label "FromPowerAutomate" \
+          --label "ReadyToMerge" \
+          --base main \
+          --head "$BRANCH_NAME")
+
+        PR_NUMBER=$(echo "$PR_URL" | grep -o '[0-9]\+$')
         echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
-    
-    #- name: Approve PR with different token
-    #  run: |
-    #    gh pr review ${{ env.PR_NUMBER }} --approve
-    #  env:
-    #    GH_TOKEN: ${{ secrets.APPROVER_TOKEN }}     
+        echo "✅ Created PR #$PR_NUMBER"
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
     - name: Auto-merge PR
-      if: env.PR_NUMBER != ''
       run: |
         echo "🔀 Merging PR #${{ env.PR_NUMBER }}"
         gh pr merge ${{ env.PR_NUMBER }} --auto --squash --delete-branch
