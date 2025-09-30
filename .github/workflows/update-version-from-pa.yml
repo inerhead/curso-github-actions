@@ -76,7 +76,13 @@ jobs:
     - name: Get PR number from output
       id: get_pr
       run: |
-        echo "PR_NUMBER=${{ steps.create_pr.outputs.pull-request-number }}" >> $GITHUB_ENV
+        PR_NUMBER="${{ steps.create_pr.outputs.pull-request-number }}"
+        echo "PR Number: $PR_NUMBER"
+        if [ -z "$PR_NUMBER" ] || [ "$PR_NUMBER" == "" ]; then
+          echo "❌ No PR was created (no changes detected or PR already exists)"
+          exit 0
+        fi
+        echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
     
     #- name: Approve PR with different token
     #  run: |
@@ -85,12 +91,15 @@ jobs:
     #    GH_TOKEN: ${{ secrets.APPROVER_TOKEN }}     
     
     - name: Auto-merge PR
+      if: env.PR_NUMBER != ''
       run: |
+        echo "🔀 Merging PR #${{ env.PR_NUMBER }}"
         gh pr merge ${{ env.PR_NUMBER }} --auto --squash --delete-branch
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
     - name: Output results
+      if: env.PR_NUMBER != ''
       run: |
         echo "✅ PR #${{ env.PR_NUMBER }} created and auto-merge enabled"
         echo "📦 Package: ${{ inputs.packageName }}"        
