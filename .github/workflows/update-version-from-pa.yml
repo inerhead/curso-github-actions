@@ -40,10 +40,20 @@ jobs:
     
     - name: Update package.json express version
       run: |
+        echo "📦 Updating express to version: ${{ inputs.versionSDK }}"
         npm pkg set dependencies.express="${{ inputs.versionSDK }}"
+        echo "✅ Express updated"
+        cat package.json | grep -A 3 dependencies
     
     - name: Install dependencies
       run: npm install
+    
+    - name: Check git status
+      run: |
+        echo "📊 Git status after changes:"
+        git status
+        echo "📝 Git diff:"
+        git diff
     
     - name: Create Pull Request
       id: create_pr
