@@ -38,24 +38,9 @@ jobs:
       with:
         node-version: '18'
     
-    - name: Set branch name
-      run: |
-        BRANCH_NAME="bump-version-${{ inputs.versionType }}-$(date +%s)"
-        echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
-    
     - name: Update package.json express version
       run: |
         npm pkg set dependencies.express="${{ inputs.versionSDK }}"
-    
-    #- name: Bump version
-    #  run: |
-    #    npm version ${{ inputs.versionType }} --no-git-tag-version
-    #    NEW_VERSION=$(node -p "require('./package.json').version")
-    #    echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
-    
-    #- name: Add SDK version to package.json
-    #   run: |
-    #     npm pkg set sdkVersion="${{ inputs.versionSDK }}"
     
     - name: Install dependencies
       run: npm install
@@ -65,9 +50,9 @@ jobs:
       uses: peter-evans/create-pull-request@v6
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        branch: ${{ env.BRANCH_NAME }}
+        branch: "bump-version-${{ inputs.versionType }}-${{ github.run_number }}"
         commit-message: "chore: bump ${{ inputs.versionType }} with SDK ${{ inputs.versionSDK }}"
-        title: "chore: Update package to version ${{ inputs.versionSDK }}"
+        title: "chore: Update express to version ${{ inputs.versionSDK }}"
         body: |
           ## 🚀 Version Update from Power Automate
           
@@ -88,16 +73,10 @@ jobs:
           ReadyToMerge
         assignees: ${{ github.actor }}
     
-    - name: Wait for PR to be created
-      run: sleep 5
-    
-    - name: Get PR number
+    - name: Get PR number from output
       id: get_pr
       run: |
-        PR_NUMBER=$(gh pr list --head "$BRANCH_NAME" --json number --jq '.[0].number')
-        echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        echo "PR_NUMBER=${{ steps.create_pr.outputs.pull-request-number }}" >> $GITHUB_ENV
     
     #- name: Approve PR with different token
     #  run: |
@@ -116,3 +95,4 @@ jobs:
         echo "✅ PR #${{ env.PR_NUMBER }} created and auto-merge enabled"
         echo "📦 Package: ${{ inputs.packageName }}"        
         echo "📱 SDK Version: ${{ inputs.versionSDK }}"
+        echo "🔄 Version Type: ${{ inputs.versionType }}"
