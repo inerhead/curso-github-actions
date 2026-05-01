@@ -17,7 +17,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
       - name: Setup env with Node
-        uses: actions/setup-node@v5.0.0
+        uses: actions/setup-node@v6.4.0
         with:
           node-version: 18      
       - name: Run with main.js

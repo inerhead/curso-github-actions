@@ -30,7 +30,7 @@ jobs:
         run: echo ¡Hola Mundo desde ${{ steps.ip.outputs.ipv4 }}! #bash
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v5.0.0
+      - uses: actions/setup-node@v6.4.0
         with:
           node-version: 18
       - name: Run reto js
